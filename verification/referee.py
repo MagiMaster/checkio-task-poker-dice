@@ -28,52 +28,12 @@ checkio.referee.cover_codes
 
 from checkio.signals import ON_CONNECT
 from checkio import api
-from checkio.referees.io import CheckiOReferee
+from checkio.referees.io import CheckiORefereeMulti
 
-from tests import TESTS
-
-def verify(enemy, player):
-    if player == []:
-        if enemy[1]:
-            return False, "There are dice that can beat this one."
-        else:
-            return True, ""
-    try:
-        if sum(map(lambda x: x % 1, player)) > 0:
-            return False, "Each side of your die must have an integer value."
-
-        if len(player) != len(enemy[0]):
-            return False, "You die must have the same number of sides as the opponent's."
-
-        if sum(player) != sum(enemy[0]):
-            return False, "Your die must have the same total as the opponent's."
-
-        if min(player) <= 0:
-            return False, "Each side of your die must have a positive (greater than 0) number on it."
-    except (TypeError, ValueError):
-        return False, "Your die must be a single list of integers."
-
-    total = 0
-    for p in player:
-        for e in enemy[0]:
-            if p < e:
-                total -= 1
-            elif p > e:
-                total += 1
-
-    if total > 0:
-        if enemy[1]:
-            return True, ""
-        else:
-            return False, "The test data says this shouldn't be possible. Please let us know so we can correct our tests."
-    elif total == 0:
-        return False, "This is only a tie. You need to find a die that can win."
-    else:
-        return False, "This is a loss. You need to find a die that can win."
 
 api.add_listener(
     ON_CONNECT,
-    CheckiOReferee(
-        tests=TESTS,
+    CheckiORefereeMulti(
+        tests={"GO"},
         checker=verify
     ).on_ready)
