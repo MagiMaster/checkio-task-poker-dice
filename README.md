@@ -1,6 +1,6 @@
-checkio-task-unfair-dice
+checkio-task-poker-dice
 ========================
 
-Checkio Task "Unfair Dice"
+Checkio Task "Poker Dice"
 
 
