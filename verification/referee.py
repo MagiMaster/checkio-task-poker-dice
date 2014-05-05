@@ -30,10 +30,47 @@ from checkio.signals import ON_CONNECT
 from checkio import api
 from checkio.referees.io import CheckiORefereeMulti
 
+import random
+
+die = ["9S", "TH", "JS", "QH", "KH", "AS"]
+
+def roll(n):
+    out = []
+    for i in range(n):
+        out.append(die[random.randrange(6)])
+    return out
+
+def initial_referee(_):
+    return {
+        "result": True,
+        "result_text": "",
+        "total_score": 0,
+        "games_complete": 0,
+        "input": [[roll(5)], {}]
+    }
+
+def process_referee(state, action):
+    if isinstance(action, str):
+        die = state["input"][0][-1]
+        scores = state["input"][1]
+        if action in scores.keys():
+            
+    else:
+        
+    pass
+
+def is_win_referee(state):
+    return state["games_complete"] == 10 and state["total_score"] >= 1000
 
 api.add_listener(
     ON_CONNECT,
     CheckiORefereeMulti(
-        tests={"GO"},
-        checker=verify
-    ).on_ready)
+        tests={"GO": {}},
+        initial_referee=initial_referee,
+        process_referee=process_referee,
+        is_win_referee=is_win_referee,
+        cover_code={
+            'python-27': cover_codes.unwrap_args,
+            'python-3': cover_codes.unwrap_args
+        }
+        ).on_ready)
