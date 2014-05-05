@@ -1,45 +1,52 @@
 <p>
-    For this task, you're <i>about</i> to play a game, but first you need to prepare. The game itself is very simple. Both players roll a single die and whoever rolls highest scores a point. (On a tie, both players reroll.) 
+   You're at a boardgame convention, but you've gotten yourself in a situation. You registered for two tournaments, but later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to attend one of the tournaments. Now you just have to program it so it knows how to play the game.
 </p>
     
 <p>
-    But these aren't standard dice. Each player can put any positive number on any side of the die as long as the number of sides match and the total of all the chosen numbers are the same. For example, one player might use a six sided die with the numbers [3, 3, 3, 3, 6, 6] while the other player uses a six sided die with the numbers [4, 4, 4, 4, 4, 4]. The interesting part of this game is that even with the same number of sides and the same total, different dice have different chances of winning. Using the example dice, the player with all 4's will win 2/3 of the time.
+    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll the others. After two rerolls (or less if you want) you must choose which category to place your score in. After all of the categories have been scored, you add everything up to determine your final score.
 </p>
 
 <p>
-    To prepare for this game, you're investigating different ways of picking the numbers. To do this, write a program that will take an opponent's die and output some die that will win against it more than half the time.
+    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades. 
+</p>
+
+<p>
+    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for each category you've scored in. You must return a list of which dice to keep or a string containing the name of the category to score. If this is your third roll then you must choose a category. If you pick a category you do not qualify for, it is worth 0 points.
+</p>
+
+<p>
+    To win the tournament (and complete the task) you must score a total of 1000 points across 10 games.
+</p>
+
+<p>
+    The categories are:<br/>
+    <table>
+        <tr><th>Category</td><td>Value</td></tr>
+        <tr><td>One Pair</td><td>2 (3 for a pair of aces)</td></tr>
+        <tr><td>Two Pair</td><td>4 (5 with a pair of aces)</td></tr>
+        <tr><td>Three of a Kind</td><td>6 (10 with 3 aces)</td></tr>
+        <tr><td>Flush</td><td>15</td></tr>
+        <tr><td>Straight</td><td>25</td></tr>
+        <tr><td>Full House</td><td>25 (30 with 3 aces)</td></tr>
+        <tr><td>Four of a Kind</td><td>50 (70 with 4 aces)</td></tr>
+        <tr><td>Five of a Kind</td><td>200 (250 with 5 aces)</td></tr>
+    </table>
 </p>
 
 <p>
     <strong>Input:</strong> 
-    A sorted list of integers, one for each face of the opponent's die.
+    A list of lists containing your previous rolls and a dictionary of scored categories. Each die is stored as a string containing the rank and suit as a single character each. ("9S", "TH", "JS", "QH", "KH" and "AS".)
 </p>
 
 <p>
     <strong>Output:</strong> 
-    A list of integers, one for each face of your die. If no die satisfies the task requirements, return an empty list.
+    A list of dice to keep or the name of a category to score. The category names must match those in the tables above except for capitalization.
 </p>
 
 <p>
     <strong>Example:</strong>
 </p>
 <pre class="brush: python">
-checkio([3, 3, 3, 3, 6, 6]) == [4, 4, 4, 4, 4, 4] # Or [3, 3, 4, 4, 5, 5]
-checkio([4, 4, 4, 4, 4, 4]) == [2, 2, 5, 5, 5, 5] # Or [5, 5, 2, 2, 5, 5]
-checkio([2, 2, 5, 5, 5, 5]) == [3, 3, 3, 3, 6, 6]
-checkio([1, 1, 3]) == [1, 2, 2]
-checkio([1, 2, 3, 4, 5, 6]) == [] # Any 6-sided die totaling 21 has a 50/50 chance of winning against the standard die.
-checkio([2, 3, 4, 5, 6, 7]) == [1, 1, 3, 7, 7, 8] # This can be beat though.
+checkio(["9S", "9S", "9S", "JS", "QH"], {}) == ["9S", "9S", "9S"]
+checkio(["9S", "9S", "9S", "JS", "QH"], {"Four of a Kind":50, "Five of a Kind":250}) == ["9S", "9S", "9S", "JS"]
 </pre>
-
-<p class="for_info_only">
-    <strong>How it is used:</strong>
-    <i>This task illustrates some of the unintuitive results in probability. Many people would think that two dice as similar as those in the task description (same number of sides, same average roll) would have a roughly 50/50 chance against each other. Even more unusual is that sets of dice can be created where die A beats die B, die B beats die C and yet die C beats die A (e.g. the first three examples above). These are called nontransitive dice.</i>
-</p>
-
-<p>
-    <strong>Preconditions:</strong><br/>
-    3 &le; len(die) &le; 10<br/>
-    sum(die) &le; 100<br/>
-    min(die) &ge; 1
-</p>
