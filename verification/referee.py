@@ -46,6 +46,7 @@ def initial_referee(_):
         "result_text": "",
         "total_score": 0,
         "games_complete": 0,
+        "hands_complete": 0,
         "input": [[roll(5)], {}]
     }
 
@@ -53,8 +54,8 @@ def process_referee(state, action):
     if isinstance(action, str):
         die = state["input"][0][-1]
         scores = state["input"][1]
-        if action in scores.keys():
-            
+        
+
     else:
         
     pass
