@@ -47,6 +47,7 @@
     <strong>Example:</strong>
 </p>
 <pre class="brush: python">
-checkio(["9S", "9S", "9S", "JS", "QH"], {}) == ["9S", "9S", "9S"]
-checkio(["9S", "9S", "9S", "JS", "QH"], {"Four of a Kind":50, "Five of a Kind":250}) == ["9S", "9S", "9S", "JS"]
+checkio([["9S", "9S", "9S", "JS", "QH"]], {}) == ["9S", "9S", "9S"]
+checkio([["9S", "9S", "9S", "JS", "QH"], ["9S", "9S", "9S", "TH", "AS"], ["9S", "9S", "9S", "JS", "KH"]], {}) == "Three of a Kind"
+checkio([["9S", "9S", "9S", "JS", "QH"]], {"Four of a Kind":50, "Five of a Kind":250}) == ["9S", "9S", "9S", "JS"]
 </pre>
