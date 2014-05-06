@@ -164,13 +164,15 @@ def is_win_referee(state):
 def initial_referee(_):
     return {
         "result": True,
-        "result_text": ""
+        "result_text": "",
+        "input": []
     }
 
 def process_referee(state, action):
     return {
         "result": False,
-        "result_text": "Testing"
+        "result_text": "Testing",
+        "input": []
     }
 
 def is_win_referee(state):
