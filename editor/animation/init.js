@@ -71,8 +71,9 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
 
             //if you need additional info from tests (if exists)
             var explanation = data.ext["explanation"];
+            var score = data.ext["total_score"];
 
-            $content.find('.output').html('&nbsp;Your result:&nbsp;' + JSON.stringify(userResult));
+            $content.find('.output').html('&nbsp;Your score:&nbsp;' + score);
 
             if (!result) {
                 //$content.find('.call').html('Fail: checkio(' + JSON.stringify(checkioInput) + ')');
