@@ -131,7 +131,7 @@ def next_roll(state, dice):
 def verify_dice(state, dice):
     prev = state["input"][0][-1]
     return Counter(prev) & Counter(dice) == Counter(dice)
-"""
+
 def initial_referee(_):
     return {
         "result": True,
@@ -160,7 +160,6 @@ def process_referee(state, action):
 def is_win_referee(state):
     return state["games_completed"] == 10 and state["total_score"] >= 1000
 """
-
 def initial_referee(_):
     return {
         "result": True,
@@ -177,7 +176,7 @@ def process_referee(state, action):
 
 def is_win_referee(state):
     return False
-
+"""
 api.add_listener(
     ON_CONNECT,
     CheckiORefereeMulti(
