@@ -31,6 +31,7 @@ import random
 from collections import Counter
 from functools import partial
 
+"""
 def score_run(n, score, aces, die):
     cs = Counter(die)
     if cs.get("AS", 0) >= n:
@@ -83,16 +84,6 @@ def roll(n):
         out.append(die[random.randrange(6)])
     return out
 
-def initial_referee(_):
-    return {
-        "result": True,
-        "result_text": "",
-        "total_score": 0,
-        "games_completed": 0,
-        "hands_completed": 0,
-        "input": [[roll(5)], {}]
-    }
-
 def invalid_move(msg):
     return {
         "result": False,
@@ -138,6 +129,16 @@ def verify_dice(state, dice):
     prev = state["input"][0][-1]
     return Counter(prev) & Counter(dice) == Counter(dice)
 
+def initial_referee(_):
+    return {
+        "result": True,
+        "result_text": "",
+        "total_score": 0,
+        "games_completed": 0,
+        "hands_completed": 0,
+        "input": [[roll(5)], {}]
+    }
+
 def process_referee(state, action):
     if isinstance(action, str):
         die = state["input"][0][-1]
@@ -155,6 +156,22 @@ def process_referee(state, action):
 
 def is_win_referee(state):
     return state["games_completed"] == 10 and state["total_score"] >= 1000
+"""
+
+def initial_referee(_):
+    return {
+        "result": True,
+        "result_text": ""
+    }
+
+def process_referee(state, action):
+    return {
+        "result": False,
+        "result_text": "Testing"
+    }
+
+def is_win_referee(state):
+    return False
 
 api.add_listener(
     ON_CONNECT,
