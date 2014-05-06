@@ -87,10 +87,11 @@ def roll(n):
         out.append(die[random.randrange(6)])
     return out
 
-def invalid_move(msg):
+def invalid_move(msg, score):
     return {
         "result": False,
-        "result_text": msg
+        "result_text": msg,
+        "total_score": score
     }
 
 def next_hand(state, cat, score):
@@ -106,7 +107,7 @@ def next_hand(state, cat, score):
         total += sum(scores.values())
         scores = {}
         if games >= 10 and total < 1000:
-            return invalid_move("Game over. You didn't get enough points to win the tournament.")
+            return invalid_move("Game over. You didn't get enough points to win the tournament.", total)
 
     state.update({
         "input": [[roll(5)], scores],
@@ -120,7 +121,7 @@ def next_roll(state, dice):
     prev = state["input"][0]
     scores = state["input"][1]
     if len(prev) >= 3:
-        return invalid_move("You can only roll three times per hand.")
+        return invalid_move("You can only roll three times per hand.", state["total_score"])
 
     prev.append(dice + roll(5 - len(dice)))
     state.update({
@@ -150,10 +151,10 @@ def process_referee(state, action):
         if action in score_fns.keys():
             return next_hand(state, action, score_fns[action](die))
         else:
-            return invalid_move("Invalid category name: " + action)
+            return invalid_move("Invalid category name: " + action, state["total_score"])
     else:
         if not verify_dice(state, action):
-            return invalid_move("You must choose which dice to keep from the list of dice you rolled.")
+            return invalid_move("You must choose which dice to keep from the list of dice you rolled.", state["total_score"])
         else:
             return next_roll(state, action)
 
