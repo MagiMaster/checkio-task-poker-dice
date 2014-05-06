@@ -184,4 +184,8 @@ api.add_listener(
         initial_referee=initial_referee,
         process_referee=process_referee,
         is_win_referee=is_win_referee,
+        cover_code={
+            'python-27': cover_codes.unwrap_args,  # or None
+            'python-3': cover_codes.unwrap_args
+        }
     ).on_ready)
