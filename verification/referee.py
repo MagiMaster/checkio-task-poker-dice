@@ -179,9 +179,8 @@ def is_win_referee(state):
 api.add_listener(
     ON_CONNECT,
     CheckiORefereeMulti(
-        tests={"GO": {}},
+        tests={"GO": [{}]},
         initial_referee=initial_referee,
         process_referee=process_referee,
-        is_win_referee=is_win_referee
-    ).on_ready
-)
+        is_win_referee=is_win_referee,
+    ).on_ready)
