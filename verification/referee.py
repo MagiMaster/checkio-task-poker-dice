@@ -29,6 +29,7 @@ checkio.referee.cover_codes
 from checkio.signals import ON_CONNECT
 from checkio import api
 from checkio.referees.multicall import CheckiORefereeMulti
+from checkio.referees import cover_codes
 
 import random
 from collections import Counter
