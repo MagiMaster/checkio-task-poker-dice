@@ -34,7 +34,6 @@ import random
 from collections import Counter
 from functools import partial
 
-"""
 def score_run(n, score, aces, die):
     cs = Counter(die)
     if cs.get("AS", 0) >= n:
@@ -131,7 +130,7 @@ def next_roll(state, dice):
 def verify_dice(state, dice):
     prev = state["input"][0][-1]
     return Counter(prev) & Counter(dice) == Counter(dice)
-
+"""
 def initial_referee(_):
     return {
         "result": True,
