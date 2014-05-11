@@ -35,6 +35,9 @@ import random
 from collections import Counter
 from functools import partial
 
+NUMBER_OF_GAMES = 20
+TARGET_SCORE = 2500
+
 def score_run(n, score, aces, die):
     cs = Counter(die)
     if cs.get("AS", 0) >= n:
@@ -106,7 +109,7 @@ def next_hand(state, cat, score):
         games += 1
         total += sum(scores.values())
         scores = {}
-        if games >= 10 and total < 1000:
+        if games >= NUMBER_OF_GAMES and total < TARGET_SCORE:
             return invalid_move("Game over. You didn't get enough points to win the tournament.", total)
 
     state.update({
@@ -159,7 +162,7 @@ def process_referee(state, action):
             return next_roll(state, action)
 
 def is_win_referee(state):
-    return state["games_completed"] == 10 and state["total_score"] >= 1000
+    return state["games_completed"] >= NUMBER_OF_GAMES and state["total_score"] >= TARGET_SCORE
 """
 def initial_referee(_):
     return {
