@@ -163,31 +163,35 @@ def process_referee(state, action):
 
 def is_win_referee(state):
     return state["games_completed"] >= NUMBER_OF_GAMES and state["total_score"] >= TARGET_SCORE
-"""
-def initial_referee(_):
-    return {
+
+first_roll = roll(5)
+
+def referee(test, answer):
+    state = {
         "result": True,
         "result_text": "",
-        "input": [1,2]
+        "total_score": 0,
+        "games_completed": 0,
+        "hands_completed": 0,
+        "input": [[first_roll], {}]
     }
+    
+    while True:
+        state = process_referee(state, answer)
+        if not state["result"]:
+            return False, state["result_text"]
+        if is_win_referee(state):
+            return True, "Final score: " + str(state["total_score"])
+        answer = checkio(state["input"][0], state["input"][1])
 
-def process_referee(state, action):
-    return {
-        "result": False,
-        "result_text": "Testing",
-        "input": [1,2]
-    }
-
-def is_win_referee(state):
-    return False
-"""
 api.add_listener(
     ON_CONNECT,
-    CheckiORefereeMulti(
-        tests={"GO": [{}]},
-        initial_referee=initial_referee,
-        process_referee=process_referee,
-        is_win_referee=is_win_referee,
+    CheckiOReferee(
+        tests={"GO": [{
+            "input": [[first_roll], {}],
+            "answer": []
+        }]},
+        checker=referee,
         cover_code={
             'python-27': cover_codes.unwrap_args,  # or None
             'python-3': cover_codes.unwrap_args
