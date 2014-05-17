@@ -166,7 +166,7 @@ def is_win_referee(state):
 
 api.add_listener(
     ON_CONNECT,
-    CheckiOReferee(
+    CheckiORefereeMulti(
         tests={"GO": []},
         initial_referee=initial_referee,
         process_referee=process_referee,
