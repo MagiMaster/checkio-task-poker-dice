@@ -164,6 +164,21 @@ def process_referee(state, action):
 def is_win_referee(state):
     return state["games_completed"] >= NUMBER_OF_GAMES and state["total_score"] >= TARGET_SCORE
 
+api.add_listener(
+    ON_CONNECT,
+    CheckiOReferee(
+        tests={"GO": []},
+        initial_referee=initial_referee,
+        process_referee=process_referee,
+        is_win_referee=is_win_referee,
+        cover_code={
+            'python-27': cover_codes.unwrap_args,  # or None
+            'python-3': cover_codes.unwrap_args
+        }
+    ).on_ready)
+
+
+"""
 first_roll = roll(5)
 
 def referee(test, answer):
@@ -197,3 +212,4 @@ api.add_listener(
             'python-3': cover_codes.unwrap_args
         }
     ).on_ready)
+"""
