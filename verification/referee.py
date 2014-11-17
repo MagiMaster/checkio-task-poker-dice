@@ -29,6 +29,7 @@ checkio.referee.cover_codes
 from checkio.signals import ON_CONNECT
 from checkio import api
 from checkio.referees.multicall import CheckiORefereeMulti
+from multi_score import CheckiORefereeMultiScore
 from checkio.referees import cover_codes
 
 import random
@@ -109,8 +110,8 @@ def next_hand(state, cat, score):
         games += 1
         total += sum(scores.values())
         scores = {}
-        if games >= NUMBER_OF_GAMES and total < TARGET_SCORE:
-            return invalid_move("Game over. You didn't get enough points to win the tournament.", total)
+        # if games >= NUMBER_OF_GAMES and total < TARGET_SCORE:
+        #     return invalid_move("Game over. You didn't get enough points to win the tournament.", total)
 
     state.update({
         "input": [[roll(5)], scores],
@@ -162,11 +163,11 @@ def process_referee(state, action):
             return next_roll(state, action)
 
 def is_win_referee(state):
-    return state["games_completed"] >= NUMBER_OF_GAMES and state["total_score"] >= TARGET_SCORE
+    return state["games_completed"] >= NUMBER_OF_GAMES  # and state["total_score"] >= TARGET_SCORE
 
 api.add_listener(
     ON_CONNECT,
-    CheckiORefereeMulti(
+    CheckiORefereeMultiScore(
         tests={"GO": []},
         initial_referee=initial_referee,
         process_referee=process_referee,
@@ -174,7 +175,8 @@ api.add_listener(
         cover_code={
             'python-27': cover_codes.unwrap_args,  # or None
             'python-3': cover_codes.unwrap_args
-        }
+        },
+        function_name="poker_dice"
     ).on_ready)
 
 

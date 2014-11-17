@@ -1,17 +1,27 @@
 <p>
-   You're at a boardgame convention, but you've gotten yourself in a situation. You registered for two tournaments, but later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to attend one of the tournaments. Now you just have to program it so it knows how to play the game.
-</p>
-    
-<p>
-    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll the others. (You can choose to "unkeep" dice between rolls.) After two rerolls, or less if you want, you must choose which category to place your score in. After all of the categories have been scored, you add everything up to determine your final score.
+    You're at a boardgame convention, but you've gotten yourself in a situation. You registered for two tournaments, but
+    later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to
+    attend one of the tournaments. Now you just have to program it so it knows how to play the game.
 </p>
 
 <p>
-    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades. 
+    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll
+    the others. (You can choose to "unkeep" dice between rolls.) After two rerolls, or less if you want, you must choose
+    which category to place your score in. After all of the categories have been scored, you add everything up to
+    determine your final score.
 </p>
 
 <p>
-    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for each category you've scored in. You must return a list of which dice to keep or a string containing the name of the category to score. If this is your third roll then you must choose a category. If you pick a category you do not qualify for, it is worth 0 points. You have eight hands per game. You can overwrite a score with a new roll, but doing so will mean you won't have enough hands to score in every category. 
+    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled
+    with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades.
+</p>
+
+<p>
+    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for
+    each category you've scored in. You must return a list of which dice to keep or a string containing the name of the
+    category to score. If this is your third roll then you must choose a category. If you pick a category you do not
+    qualify for, it is worth 0 points. You have eight hands per game. You can overwrite a score with a new roll, but
+    doing so will mean you won't have enough hands to score in every category.
 </p>
 
 <p>
@@ -20,27 +30,57 @@
 
 <p>
     The categories are:<br/>
-    <table border="1">
-        <tr><th>Category</td><th>Value</th></tr>
-        <tr><td>One Pair</td><td>2 (3 for a pair of aces)</td></tr>
-        <tr><td>Two Pair</td><td>4 (5 with a pair of aces)</td></tr>
-        <tr><td>Three of a Kind</td><td>6 (8 with 3 aces)</td></tr>
-        <tr><td>Flush</td><td>15</td></tr>
-        <tr><td>Straight</td><td>25</td></tr>
-        <tr><td>Full House</td><td>25 (30 with 3 aces)</td></tr>
-        <tr><td>Four of a Kind</td><td>50 (60 with 4 aces)</td></tr>
-        <tr><td>Five of a Kind</td><td>200 (240 with 5 aces)</td></tr>
-    </table>
+<table border="1">
+    <tr>
+        <th>Category
+        </td>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>One Pair</td>
+        <td>2 (3 for a pair of aces)</td>
+    </tr>
+    <tr>
+        <td>Two Pair</td>
+        <td>4 (5 with a pair of aces)</td>
+    </tr>
+    <tr>
+        <td>Three of a Kind</td>
+        <td>6 (8 with 3 aces)</td>
+    </tr>
+    <tr>
+        <td>Flush</td>
+        <td>15</td>
+    </tr>
+    <tr>
+        <td>Straight</td>
+        <td>25</td>
+    </tr>
+    <tr>
+        <td>Full House</td>
+        <td>25 (30 with 3 aces)</td>
+    </tr>
+    <tr>
+        <td>Four of a Kind</td>
+        <td>50 (60 with 4 aces)</td>
+    </tr>
+    <tr>
+        <td>Five of a Kind</td>
+        <td>200 (240 with 5 aces)</td>
+    </tr>
+</table>
 </p>
 
 <p>
-    <strong>Input:</strong> 
-    A list of lists containing your previous rolls and a dictionary of scored categories. Each die is stored as a string containing the rank and suit as a single character each. ("9S", "TH", "JS", "QH", "KH" and "AS".)
+    <strong>Input:</strong>
+    A list of lists containing your previous rolls and a dictionary of scored categories. Each die is stored as a string
+    containing the rank and suit as a single character each. ("9S", "TH", "JS", "QH", "KH" and "AS".)
 </p>
 
 <p>
-    <strong>Output:</strong> 
-    A list of dice to keep or the name of a category to score. The category names must match those in the tables above except for capitalization.
+    <strong>Output:</strong>
+    A list of dice to keep or the name of a category to score. The category names must match those in the tables above
+    except for capitalization.
 </p>
 
 <p>
