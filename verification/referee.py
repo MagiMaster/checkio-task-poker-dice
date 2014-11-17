@@ -28,7 +28,6 @@ checkio.referee.cover_codes
 
 from checkio.signals import ON_CONNECT
 from checkio import api
-from checkio.referees.multicall import CheckiORefereeMulti
 from multi_score import CheckiORefereeMultiScore
 from checkio.referees import cover_codes
 
@@ -37,6 +36,7 @@ from collections import Counter
 from functools import partial
 
 NUMBER_OF_GAMES = 3
+NUMBER_OF_HANDS = 8
 TARGET_SCORE = 2500
 
 def score_run(n, score, aces, die):
@@ -163,12 +163,12 @@ def process_referee(state, action):
             return next_roll(state, action)
 
 def is_win_referee(state):
-    return state["games_completed"] >= NUMBER_OF_GAMES  # and state["total_score"] >= TARGET_SCORE
+    return state["hands_completed"] >= NUMBER_OF_HANDS  # and state["total_score"] >= TARGET_SCORE
 
 api.add_listener(
     ON_CONNECT,
     CheckiORefereeMultiScore(
-        tests={"GO": []},
+        tests=dict(("Game {}".format(i + 1), {}) for i in range(NUMBER_OF_GAMES)),
         initial_referee=initial_referee,
         process_referee=process_referee,
         is_win_referee=is_win_referee,
