@@ -36,7 +36,7 @@ import random
 from collections import Counter
 from functools import partial
 
-NUMBER_OF_GAMES = 20
+NUMBER_OF_GAMES = 3
 TARGET_SCORE = 2500
 
 def score_run(n, score, aces, die):
