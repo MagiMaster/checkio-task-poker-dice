@@ -106,8 +106,6 @@ def next_hand(state, cat, score):
     scores.update({cat: score})
 
     if hands >= 8:
-        hands = 0
-        games += 1
         total += sum(scores.values())
         scores = {}
         # if games >= NUMBER_OF_GAMES and total < TARGET_SCORE:
