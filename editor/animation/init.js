@@ -1,6 +1,6 @@
 //Dont change it
-requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
-    function (ext, $, TableComponent) {
+requirejs(['ext_editor_1', 'jquery_190', 'raphael_210', 'snap.svg_030'],
+    function (ext, $, Raphael, Snap) {
 
         var cur_slide = {};
 
@@ -8,7 +8,9 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
         });
 
         ext.set_process_in(function (this_e, data) {
+            cur_slide = {};
             cur_slide["in"] = data[0];
+            this_e.addAnimationSlide(cur_slide);
         });
 
         ext.set_process_out(function (this_e, data) {
@@ -17,8 +19,6 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
 
         ext.set_process_ext(function (this_e, data) {
             cur_slide.ext = data;
-            this_e.addAnimationSlide(cur_slide);
-            cur_slide = {};
         });
 
         ext.set_process_err(function (this_e, data) {
@@ -28,8 +28,47 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
         });
 
         ext.set_animate_success_slide(function (this_e, options) {
-            var $h = $(this_e.setHtmlSlide('<div class="animation-success"><div></div></div>'));
-            this_e.setAnimationHeight(115);
+            var ends = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
+
+            options = options || {};
+            var is_new_record = options.is_new_record || false;
+            var place_rating = String(options.place_rating || 0);
+            var best_points = options.best_points || 0;
+            var current_points = options.current_points || 0;
+            var $div = $("<div></div>");
+            var $h = $(this_e.setHtmlSlide('<div class="animation-success"><div class="result"></div></div>'));
+            var $resultDiv = $h.find(".result");
+            var $table = $("<table></table>").addClass("numbers");
+            if (is_new_record) {
+                $resultDiv.addClass("win-sign");
+                $resultDiv.append($("<div></div>").text("You beat your best results!"));
+                var $tr = $("<tr></tr>");
+                $tr.append($("<th></th>").text(best_points));
+                $tr.append($("<th></th>").text(place_rating).append($("<span></span>").addClass(".ends").text(ends[Number(place_rating[place_rating.length - 1])])));
+
+                $table.append($tr);
+                $tr = $("<tr></tr>");
+                $tr.append($("<td></td>").text("Personal best"));
+                $tr.append($("<td></td>").text("Place"));
+                $table.append($tr);
+            }
+            else {
+                $resultDiv.addClass("norm-sign");
+                $resultDiv.append($("<div></div>").text("Your results"));
+                $tr = $("<tr></tr>");
+                $tr.append($("<th></th>").text(current_points));
+                $tr.append($("<th></th>").text(best_points));
+                $tr.append($("<th></th>").text(place_rating).append($("<span></span>").addClass(".ends").text(ends[Number(place_rating[place_rating.length - 1])])));
+
+                $table.append($tr);
+                $tr = $("<tr></tr>");
+                $tr.append($("<td></td>").text("Points"));
+                $tr.append($("<td></td>").text("Personal best"));
+                $tr.append($("<td></td>").text("Place"));
+                $table.append($tr);
+            }
+            $resultDiv.append($table);
+            this_e.setAnimationHeight(255);
         });
 
         ext.set_animate_slide(function (this_e, data, options) {
@@ -39,11 +78,25 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 return false;
             }
 
-            var checkioInput = data.in;
-            var checkioInputStr = JSON.stringify(checkioInput);
+            //YOUR FUNCTION NAME
+            var fname = 'poker_dice';
 
-            var failError = function(dError) {
-                $content.find('.call').html('Fail: checkio(' + checkioInputStr + ')');
+            var checkioInput = data.in || [
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1],
+                [1, 1]
+            ];
+            var checkioInputStr = fname + '(' + JSON.stringify(checkioInput) + ')';
+
+            var failError = function (dError) {
+                $content.find('.call').html(checkioInputStr);
                 $content.find('.output').html(dError.replace(/\n/g, ","));
 
                 $content.find('.output').addClass('error');
@@ -63,33 +116,39 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
                 return false;
             }
 
-            //var rightResult = data.ext["answer"];
-            var userResult = data.out;
-            var result = data.ext["result"];
-            var result_text = data.ext["result_text"];
+            $content.find('.call').html(checkioInputStr);
+            $content.find('.output').html('Working...');
 
 
-            //if you need additional info from tests (if exists)
-            var explanation = data.ext["explanation"];
-            var score = data.ext["total_score"];
+            if (data.ext) {
+                var rightResult = data.ext["real_point"];
+                var values = data.ext["answer"];
+                var userResult = data.out;
+                var result = data.ext["result"];
+                var result_text = data.ext["result_text"];
+                var result_score = data.ext["total_score"];
 
-            $content.find('.output').html('&nbsp;Your score:&nbsp;' + score);
+                var svg = new SVG($content.find(".explanation")[0]);
+                svg.draw(values, userResult);
 
-            if (!result) {
-                //$content.find('.call').html('Fail: checkio(' + JSON.stringify(checkioInput) + ')');
-                //$content.find('.answer').html('Right result:&nbsp;' + JSON.stringify(rightResult));
-                $content.find('.call').remove();
-                $content.find('.answer').html(result_text);
-                $content.find('.answer').addClass('error');
-                $content.find('.output').addClass('error');
-                //$content.find('.call').addClass('error');
+                //if you need additional info from tests (if exists)
+                var explanation = data.ext["explanation"];
+                $content.find('.output').html('&nbsp;Your result:&nbsp;' + JSON.stringify(userResult) +
+                    '<br>+' + result_score + " points.");
+                if (!result) {
+                    $content.find('.answer').html(result_text);
+                    $content.find('.answer').addClass('error');
+                    $content.find('.output').addClass('error');
+                    $content.find('.call').addClass('error');
+                }
+                else {
+                    $content.find('.answer').html("Real value is " + JSON.stringify(rightResult));
+                }
             }
             else {
-                //$content.find('.call').html('Pass: checkio(' + JSON.stringify(checkioInput) + ')');
-                $content.find('.call').remove();
                 $content.find('.answer').remove();
             }
-            //Dont change the code before it
+
 
             //Your code here about test explanation animation
             //$content.find(".explanation").html("Something text for example");
@@ -115,27 +174,74 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210'],
 //            $tryit.find('.bn-check').click(function (e) {
 //                e.preventDefault();
 //                this_e.sendToConsoleCheckiO("something");
-//                e.stopPropagation();
-//                return false;
 //            });
 //        });
 
-        var colorOrange4 = "#F0801A";
-        var colorOrange3 = "#FA8F00";
-        var colorOrange2 = "#FAA600";
-        var colorOrange1 = "#FABA00";
+        function SVG(dom) {
 
-        var colorBlue4 = "#294270";
-        var colorBlue3 = "#006CA9";
-        var colorBlue2 = "#65A1CF";
-        var colorBlue1 = "#8FC7ED";
 
-        var colorGrey4 = "#737370";
-        var colorGrey3 = "#9D9E9E";
-        var colorGrey2 = "#C5C6C6";
-        var colorGrey1 = "#EBEDED";
+            var colorOrange4 = "#F0801A";
+            var colorOrange3 = "#FA8F00";
+            var colorOrange2 = "#FAA600";
+            var colorOrange1 = "#FABA00";
 
-        var colorWhite = "#FFFFFF";
+            var colorBlue4 = "#294270";
+            var colorBlue3 = "#006CA9";
+            var colorBlue2 = "#65A1CF";
+            var colorBlue1 = "#8FC7ED";
+
+            var colorGrey4 = "#737370";
+            var colorGrey3 = "#9D9E9E";
+            var colorGrey2 = "#C5C6C6";
+            var colorGrey1 = "#EBEDED";
+
+            var colorWhite = "#FFFFFF";
+
+            var p = 10;
+
+            var unitMarkSize = 5;
+
+            var unit = 30;
+
+            var yField = 300;
+
+            var sizeX = 12 * unit + p;
+            var sizeY = yField + 2 * p;
+
+
+            var paper = Raphael(dom, sizeX, sizeY);
+
+
+            var aAxis = {"stroke": colorBlue3, "stroke-width": 2, "arrow-end": "classic"};
+            var aUnit = {"stroke": colorBlue3, "stroke-width": 2};
+            var aPoint = {"fill": colorBlue4, "stroke-width": 0};
+            var aPointUser = {"fill": colorBlue3, "stroke-width": 0};
+
+            var R = 5;
+
+            this.draw = function(values, user_value) {
+                paper.path([["M", p, sizeY - p], ["V", p]]).attr(aAxis);
+                paper.path([["M", p, sizeY / 2], ["H", sizeX - p]]).attr(aAxis);
+                for (var i = 1; i < 12; i++) {
+                    paper.path([["M", p + unit * i, sizeY / 2 - unitMarkSize], ["V", sizeY / 2 + unitMarkSize]]).attr(aUnit);
+                }
+                var minValue = Math.min.apply(null, values);
+                var maxValue = Math.max.apply(null, values);
+
+                var vUnit = yField / (maxValue - minValue);
+
+                for (var j = 0; j < values.length; j++) {
+                    var c = paper.circle((j + 1) * unit, sizeY - p - (values[j] - minValue) * vUnit, R).attr(aPoint);
+                }
+                c.attr("fill", colorOrange4);
+                if (!isNaN(user_value)) {
+                    paper.circle(11 * unit, sizeY - p - (user_value - minValue) * vUnit, R).attr(aPointUser);
+                }
+            }
+
+
+        }
+
         //Your Additional functions or objects inside scope
         //
         //
