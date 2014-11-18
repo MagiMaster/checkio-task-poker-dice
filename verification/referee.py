@@ -35,7 +35,7 @@ import random
 from collections import Counter
 from functools import partial
 
-NUMBER_OF_GAMES = 3
+NUMBER_OF_GAMES = 5
 NUMBER_OF_HANDS = 8
 TARGET_SCORE = 2500
 
@@ -101,21 +101,16 @@ def invalid_move(msg, score):
 def next_hand(state, cat, score):
     hands = state["hands_completed"] + 1
     games = state["games_completed"]
-    total = state["total_score"]
+    total_score = state["total_score"]
     scores = state["input"][1]
     scores.update({cat: score})
-
-    if hands >= 8:
-        total += sum(scores.values())
-        scores = {}
-        # if games >= NUMBER_OF_GAMES and total < TARGET_SCORE:
-        #     return invalid_move("Game over. You didn't get enough points to win the tournament.", total)
+    total_score = sum(scores.values())
 
     state.update({
         "input": [[roll(5)], scores],
         "hands_completed": hands,
         "games_completed": games,
-        "total_score": total
+        "total_score": total_score
     })
     return state
 

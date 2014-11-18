@@ -122,26 +122,27 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210', 'snap.svg_030'],
 
             if (data.ext) {
                 var rightResult = data.ext["real_point"];
-                var values = data.ext["answer"];
                 var userResult = data.out;
                 var result = data.ext["result"];
                 var result_text = data.ext["result_text"];
                 var result_score = data.ext["total_score"];
+                var updatedInput = data.ext["input"];
 
                 var svg = new SVG($content.find(".explanation")[0]);
+                svg.draw(checkioInput[0], updatedInput[1]);
 
                 //if you need additional info from tests (if exists)
                 var explanation = data.ext["explanation"];
                 $content.find('.output').html('&nbsp;Your result:&nbsp;' + JSON.stringify(userResult) +
-                    '<br>+' + result_score + " points.");
+                    "<br>Total Score: " + result_score);
                 if (!result) {
-                    $content.find('.answer').html(result_text + "<br>" + result_score);
+                    $content.find('.answer').html(result_text);
                     $content.find('.answer').addClass('error');
                     $content.find('.output').addClass('error');
                     $content.find('.call').addClass('error');
                 }
                 else {
-                    $content.find('.answer').html("Real value is " + JSON.stringify(rightResult));
+                    $content.find('.answer').remove();
                 }
             }
             else {
@@ -196,23 +197,86 @@ requirejs(['ext_editor_1', 'jquery_190', 'raphael_210', 'snap.svg_030'],
 
             var colorWhite = "#FFFFFF";
 
-            var p = 10;
+            var pad = 10;
 
-            var unitMarkSize = 5;
-
-            var unit = 30;
-
-            var yField = 300;
-
-            var sizeX = 12 * unit + p;
-            var sizeY = yField + 2 * p;
+            var diceSize = 40;
 
 
-            var paper = Raphael(dom, sizeX, sizeY);
+            var sizeX = diceSize * 5 + pad * 6;
+            var sizeY;
+
+            var paper;
+
+            var aDice = {"stroke-width": 3, "stroke": colorBlue4};
+            var aDiceTextHeart = {"stroke": colorOrange4, "fill": colorOrange4, "font-size": diceSize * 0.6,
+                "font-family": "Roboto, Arial. serif", "font-weight": "bold"};
+            var aDiceTextSpade = {"stroke": colorBlue4, "fill": colorBlue4, "font-size": diceSize * 0.6,
+                "font-family": "Roboto, Arial. serif", "font-weight": "bold"};
+            var aText = {"stroke": colorBlue4, "fill": colorBlue4, "font-size": diceSize * 0.4,
+                "font-family": "Roboto, Arial. serif"};
+            var aLine = {"stroke": colorBlue3, "stroke-width": 2};
 
 
-            var R = 5;
+            var HANDS = [
+                "one pair",
+                "two pair",
+                "three of a kind",
+                "flush",
+                "full house",
+                "straight",
+                "four of a kind",
+                "five of a kind"
+            ];
 
+            this.draw = function (dices, table) {
+                sizeY = dices.length * (pad + diceSize) + pad * 2 + 4 * diceSize;
+                paper = Raphael(dom, sizeX, sizeY);
+
+                for (var i = dices.length - 1; i >= 0; i--) {
+                    var cDice = dices[i];
+                    var temp = paper.set();
+                    for (var j = 0; j < cDice.length; j++) {
+
+                        temp.push(
+                            paper.rect(pad + j * (diceSize + pad),
+                                    (dices.length - i - 1) * (diceSize + pad) + pad,
+                                diceSize, diceSize, diceSize / 8
+                            ).attr(aDice)
+                        );
+                        var chDice = cDice[j].replace("S", "♠").replace("H", "♥");
+                        temp.push(
+                            paper.text(pad + j * (diceSize + pad) + diceSize / 2,
+                                    (dices.length - i - 1) * (diceSize + pad) + pad + diceSize / 2,
+                                chDice).attr(chDice[1] === "♥" ? aDiceTextHeart : aDiceTextSpade)
+                        );
+                    }
+                    if (i !== dices.length - 1) {
+                        temp.attr("opacity", 0.5);
+                    }
+                }
+
+                for (i = 0; i < HANDS.length; i++) {
+                    var shift = (sizeX - pad) / 8;
+                    paper.text(pad + (pad + diceSize) * 1.5,
+                            pad + dices.length * (pad + diceSize) + diceSize / 4 + i * diceSize / 2,
+                        HANDS[i]).attr(aText);
+                    paper.text(pad + (pad + diceSize) * 4,
+                            pad + dices.length * (pad + diceSize) + diceSize / 4 + i * diceSize / 2,
+                        table[HANDS[i]] || "0").attr(aText);
+
+                    if (i != HANDS.length) {
+                        paper.path([
+                            ["M", pad, pad + dices.length * (pad + diceSize) + (i + 1) * diceSize / 2],
+                            ["H", sizeX - pad]
+                        ]).attr(aLine);
+                    }
+                }
+                paper.path([
+                    ["M", pad + (pad + diceSize) * 3, pad + dices.length * (pad + diceSize)],
+                    ["V", sizeY - pad]
+                ]).attr(aLine);
+
+            }
 
 
         }
