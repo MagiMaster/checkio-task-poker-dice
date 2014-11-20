@@ -12,35 +12,24 @@
 </div>
 
 <p>
-    You're at a boardgame convention, but you've gotten yourself in a situation. You registered for two tournaments, but
-    later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to
-    attend one of the tournaments. Now you just have to program it so it knows how to play the game.
+    You're at a board game convention, but you've gotten yourself into a situation. You registered for two tournaments, but later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to attend one of the tournaments. Now you just have to program it so it knows how to play the game.
+
 </p>
 
 <p>
-    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll
-    the others. (You can choose to "unkeep" dice between rolls.) After two rerolls, or less if you want, you must choose
-    which category to place your score in. After all of the categories have been scored, you add everything up to
-    determine your final score.
+    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll the others. You may choose to "discard" dice between rolls. After two rerolls, (or less if you wish) you must choose which category to place your score in. After all of the categories have been scored, you add everything up to determine your final score.
 </p>
 
 <p>
-    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled
-    with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades.
+    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades.
 </p>
 
 <p>
-    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for
-    each category you've scored in. You must return a list of which dice to keep or a string containing the name of the
-    category to score. If this is your third roll then you must choose a category. If you pick a category you do not
-    qualify for, it is worth 0 points. You have eight hands per game. You can overwrite a score with a new roll, but
-    doing so will mean you won't have enough hands to score in every category.
+    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for each category you've scored in. You must return a list of the dice you’ll keep or a string containing the name of the category you scored. If this is your third roll then you must choose a category. If you pick a category you do not qualify for, it is worth 0 points. You have eight hands per game. You can overwrite the score with a new roll, but doing so will mean you won't have enough hands to score in every category.
 </p>
 
 <p>
-    Each die is stored as a string containing the rank and suit as a single character each:
-    "9S", "TH", "JS", "QH", "KH" or "AS".
-    The category names must match those in the tables below except for capitalization (lower them).
+    Each die is stored as a string containing the rank and suit as a single character each: "9S", "TH", "JS", "QH", "KH" or "AS". The category names must match those in the tables below except for capitalization (lower them).
 </p>
 
 <p>
@@ -89,19 +78,15 @@
 </div>
 
 <p>
-    This mission score are dynamical and will be calculated based on your solution results.
-    You will play 5 games and earn a sum of points for these games.
-    Each game start in a new environment.
+    This mission score is dynamic and will be calculated based on your solutions results. You will play 5 games and earn a sum of points for each of them. Each game starts in a new environment.
 </p>
 <p>
-    <strong>Input:</strong> Two arguments. Your previous rolls
-    as a list of lists and scored categories a dictionary.
+    <strong>Input:</strong> Two arguments. Your previous die rolls as a list of lists including the score categories as a dictionary.
 </p>
 
 <p>
     <strong>Output:</strong>
-    A list of dice to keep as a list/tuple of strings
-    or the name of a category to score as a string.
+    A list of dice to keep as a list/tuple of strings or the name of a category to score as a string.
 
 </p>
 
@@ -122,7 +107,8 @@ poker_dice([["9S", "9S", "9S", "JS", "QH"]],
 
 <p class="for_info_only">
     <strong>How it is used: </strong>
-    You can use it for casino ;-)
+    This simple program ought to help you weigh the odds when you visit the casino. ;-)
+
 </p>
 
 <p>
