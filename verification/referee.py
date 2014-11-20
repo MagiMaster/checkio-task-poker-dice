@@ -28,14 +28,15 @@ checkio.referee.cover_codes
 
 from checkio.signals import ON_CONNECT
 from checkio import api
-from checkio.referees.multicall import CheckiORefereeMulti
+from multi_score import CheckiORefereeMultiScore
 from checkio.referees import cover_codes
 
 import random
 from collections import Counter
 from functools import partial
 
-NUMBER_OF_GAMES = 20
+NUMBER_OF_GAMES = 5
+NUMBER_OF_HANDS = 8
 TARGET_SCORE = 2500
 
 def score_run(n, score, aces, die):
@@ -100,23 +101,16 @@ def invalid_move(msg, score):
 def next_hand(state, cat, score):
     hands = state["hands_completed"] + 1
     games = state["games_completed"]
-    total = state["total_score"]
+    total_score = state["total_score"]
     scores = state["input"][1]
     scores.update({cat: score})
-
-    if hands >= 8:
-        hands = 0
-        games += 1
-        total += sum(scores.values())
-        scores = {}
-        if games >= NUMBER_OF_GAMES and total < TARGET_SCORE:
-            return invalid_move("Game over. You didn't get enough points to win the tournament.", total)
+    total_score = sum(scores.values())
 
     state.update({
         "input": [[roll(5)], scores],
         "hands_completed": hands,
         "games_completed": games,
-        "total_score": total
+        "total_score": total_score
     })
     return state
 
@@ -162,19 +156,20 @@ def process_referee(state, action):
             return next_roll(state, action)
 
 def is_win_referee(state):
-    return state["games_completed"] >= NUMBER_OF_GAMES and state["total_score"] >= TARGET_SCORE
+    return state["hands_completed"] >= NUMBER_OF_HANDS  # and state["total_score"] >= TARGET_SCORE
 
 api.add_listener(
     ON_CONNECT,
-    CheckiORefereeMulti(
-        tests={"GO": []},
+    CheckiORefereeMultiScore(
+        tests=dict(("Game {}".format(i + 1), {}) for i in range(NUMBER_OF_GAMES)),
         initial_referee=initial_referee,
         process_referee=process_referee,
         is_win_referee=is_win_referee,
         cover_code={
             'python-27': cover_codes.unwrap_args,  # or None
             'python-3': cover_codes.unwrap_args
-        }
+        },
+        function_name="poker_dice"
     ).on_ready)
 
 

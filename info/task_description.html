@@ -1,53 +1,117 @@
+<div class="story">
+    <p>
+        "God does not play dice with the universe; He plays an ineffable game of His own devising,
+        which might be compared, from the perspective of any of the other players [i.e. everybody],
+        to being involved in an obscure and complex variant of poker in a pitch-dark room,
+        with blank cards, for infinite stakes, with a Dealer who won't tell you the rules,
+        and who smiles all the time."
+    </p>
+    <p>
+        ― Terry Pratchett, "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch"
+    </p>
+</div>
+
 <p>
-   You're at a boardgame convention, but you've gotten yourself in a situation. You registered for two tournaments, but later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to attend one of the tournaments. Now you just have to program it so it knows how to play the game.
-</p>
-    
-<p>
-    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll the others. (You can choose to "unkeep" dice between rolls.) After two rerolls, or less if you want, you must choose which category to place your score in. After all of the categories have been scored, you add everything up to determine your final score.
+    You're at a board game convention, but you've gotten yourself into a situation. You registered for two tournaments, but later realized they both take place at the same time. Fortunately for you, you have a robotic double on hand to attend one of the tournaments. Now you just have to program it so it knows how to play the game.
+
 </p>
 
 <p>
-    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades. 
+    The game in question involves rolling 5 poker dice. After a roll you can choose to keep some of the dice and reroll the others. You may choose to "discard" dice between rolls. After two rerolls, (or less if you wish) you must choose which category to place your score in. After all of the categories have been scored, you add everything up to determine your final score.
 </p>
 
 <p>
-    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for each category you've scored in. You must return a list of which dice to keep or a string containing the name of the category to score. If this is your third roll then you must choose a category. If you pick a category you do not qualify for, it is worth 0 points. You have eight hands per game. You can overwrite a score with a new roll, but doing so will mean you won't have enough hands to score in every category. 
+    Poker dice are six-sided dice labeled with various cards. For this task, all the dice are the same and are labeled with the 9 of spades, 10 of hearts, jack of spades, queen of hearts, king of hearts and ace of spades.
 </p>
 
 <p>
-    To win the tournament (and complete the task) you must score a total of 1000 points across 10 games.
+    To play the game, you are given a list of your previous rolls and a dictionary containing your current score for each category you've scored in. You must return a list of the dice you’ll keep or a string containing the name of the category you scored. If this is your third roll then you must choose a category. If you pick a category you do not qualify for, it is worth 0 points. You have eight hands per game. You can overwrite the score with a new roll, but doing so will mean you won't have enough hands to score in every category.
 </p>
 
 <p>
-    The categories are:<br/>
-    <table border="1">
-        <tr><th>Category</td><th>Value</th></tr>
-        <tr><td>One Pair</td><td>2 (3 for a pair of aces)</td></tr>
-        <tr><td>Two Pair</td><td>4 (5 with a pair of aces)</td></tr>
-        <tr><td>Three of a Kind</td><td>6 (8 with 3 aces)</td></tr>
-        <tr><td>Flush</td><td>15</td></tr>
-        <tr><td>Straight</td><td>25</td></tr>
-        <tr><td>Full House</td><td>25 (30 with 3 aces)</td></tr>
-        <tr><td>Four of a Kind</td><td>50 (60 with 4 aces)</td></tr>
-        <tr><td>Five of a Kind</td><td>200 (240 with 5 aces)</td></tr>
-    </table>
+    Each die is stored as a string containing the rank and suit as a single character each: "9S", "TH", "JS", "QH", "KH" or "AS". The category names must match those in the tables below except for capitalization (lower them).
 </p>
 
 <p>
-    <strong>Input:</strong> 
-    A list of lists containing your previous rolls and a dictionary of scored categories. Each die is stored as a string containing the rank and suit as a single character each. ("9S", "TH", "JS", "QH", "KH" and "AS".)
+    The categories are:
+</p>
+<div>
+<table border="1">
+    <tr>
+        <th>Category
+        </th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>One Pair</td>
+        <td>2 (3 for a pair of aces)</td>
+    </tr>
+    <tr>
+        <td>Two Pair</td>
+        <td>4 (5 with a pair of aces)</td>
+    </tr>
+    <tr>
+        <td>Three of a Kind</td>
+        <td>6 (8 with 3 aces)</td>
+    </tr>
+    <tr>
+        <td>Flush</td>
+        <td>15</td>
+    </tr>
+    <tr>
+        <td>Straight</td>
+        <td>25</td>
+    </tr>
+    <tr>
+        <td>Full House</td>
+        <td>25 (30 with 3 aces)</td>
+    </tr>
+    <tr>
+        <td>Four of a Kind</td>
+        <td>50 (60 with 4 aces)</td>
+    </tr>
+    <tr>
+        <td>Five of a Kind</td>
+        <td>200 (240 with 5 aces)</td>
+    </tr>
+</table>
+</div>
+
+<p>
+    This mission score is dynamic and will be calculated based on your solutions results. You will play 5 games and earn a sum of points for each of them. Each game starts in a new environment.
+</p>
+<p>
+    <strong>Input:</strong> Two arguments. Your previous die rolls as a list of lists including the score categories as a dictionary.
 </p>
 
 <p>
-    <strong>Output:</strong> 
-    A list of dice to keep or the name of a category to score. The category names must match those in the tables above except for capitalization.
+    <strong>Output:</strong>
+    A list of dice to keep as a list/tuple of strings or the name of a category to score as a string.
+
 </p>
 
 <p>
     <strong>Example:</strong>
 </p>
-<pre class="brush: python">
-checkio([["9S", "9S", "9S", "JS", "QH"]], {}) == ["9S", "9S", "9S"]
-checkio([["9S", "9S", "9S", "JS", "QH"], ["9S", "9S", "9S", "TH", "AS"], ["9S", "9S", "9S", "JS", "KH"]], {}) == "Three of a Kind"
-checkio([["9S", "9S", "9S", "JS", "QH"]], {"Four of a Kind":50, "Five of a Kind":250}) == ["9S", "9S", "9S", "JS"]
-</pre>
+<textarea data-code="python">
+HANDS = ("one pair", "two pair", "three of a kind", "flush",
+    "straight", "full house", "four of a kind", "five of a kind")
+poker_dice([["9S", "9S", "9S", "JS", "QH"]],
+    {}) # ["9S", "9S", "9S"]
+poker_dice([["9S", "9S", "9S", "JS", "QH"], ["9S", "9S", "9S", "TH", "AS"], ["9S", "9S", "9S", "JS", "KH"]],
+    {}) # "Three of a Kind"
+poker_dice([["9S", "9S", "9S", "JS", "QH"]],
+    {"Four of a Kind":50, "Five of a Kind":250}) # ["9S", "9S", "9S", "JS"]
+</textarea>
+<br>
+
+<p class="for_info_only">
+    <strong>How it is used: </strong>
+    This simple program ought to help you weigh the odds when you visit the casino. ;-)
+
+</p>
+
+<p>
+    <strong>Precondition:</strong><br>
+    len(rolls) <= 3<br>
+</p>

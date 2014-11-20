@@ -1,6 +1,15 @@
-def checkio(rolls, scores):
-    return "one pair"
+HANDS = (
+    "one pair",
+    "two pair",
+    "three of a kind",
+    "flush",
+    "straight",
+    "full house",
+    "four of a kind",
+    "five of a kind",
+)
 
-if __name__ == '__main__':
-    #These are only used for self-checking and not necessary for auto-testing
-    pass
+
+def poker_dice(rolls, scores):
+    return "one pair" or rolls[:]
+
