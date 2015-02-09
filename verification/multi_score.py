@@ -18,7 +18,7 @@ class CheckiORefereeMultiScore(CheckiORefereeMulti):
         if referee_result and self.is_win_referee:
             is_win_result = self.is_win_referee(self.referee_data)
         else:
-            is_win_result = referee_result.get("is_win", False)
+            is_win_result = referee_data.get("is_win", False)
 
         self.referee_data.update({"is_win": is_win_result})
 
